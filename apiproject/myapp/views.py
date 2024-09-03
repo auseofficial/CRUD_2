@@ -1,9 +1,6 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse, HttpResponse
-from rest_framework.parsers import JSONParser
 from myapp.models import Contacts
 from myapp.serializers import ContactSerializer
 
@@ -33,8 +30,7 @@ def api_detail(request, pk):
         return Response(serializer.data)
 
     elif request.method == 'PUT':
-        data = JSONParser().parse(request)
-        serializer = ContactSerializer(dvar, data=data)
+        serializer = ContactSerializer(dvar, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
